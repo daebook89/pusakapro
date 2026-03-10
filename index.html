@@ -20,9 +20,23 @@
         
         .h-title { letter-spacing: -0.02em; }
         
+        /* PDF Specific Centering & Styling */
+        #report-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
         @media print {
             .no-print { display: none !important; }
-            .print-area { background-color: white !important; padding: 0 !important; border: none !important; box-shadow: none !important; }
+            .print-area { 
+                background-color: white !important; 
+                padding: 20mm !important; 
+                border: none !important; 
+                box-shadow: none !important;
+                width: 100% !important;
+                margin: 0 !important;
+            }
             body { background-color: white !important; }
         }
     </style>
@@ -37,9 +51,9 @@
         <div class="p-6 border-b border-slate-100 bg-gradient-to-br from-slate-50 to-indigo-50/30">
             <div class="flex items-center gap-3 mb-2">
                 <!-- LOGO PEMICU -->
-                <div id="sidebar-logo" onclick="document.getElementById('logoInput').click()" class="w-12 h-12 bg-gradient-to-br from-indigo-600 to-blue-500 rounded-xl flex items-center justify-center text-white shadow-md border border-indigo-400 cursor-pointer overflow-hidden relative group">
-                    <i data-lucide="shield-check" class="w-7 h-7"></i>
-                    <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <div id="sidebar-logo" onclick="document.getElementById('logoInput').click()" class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400 border border-dashed border-slate-300 cursor-pointer overflow-hidden relative group">
+                    <i data-lucide="image-plus" class="w-6 h-6" id="sidebar-icon"></i>
+                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                         <i data-lucide="upload" class="w-4 h-4 text-white"></i>
                     </div>
                 </div>
@@ -58,11 +72,8 @@
         <!-- Topbar mobile -->
         <div class="md:hidden bg-white p-4 border-b border-slate-200 flex justify-between items-center shadow-sm z-20">
             <div class="flex items-center gap-2">
-                <div id="mobile-logo" onclick="document.getElementById('logoInput').click()" class="w-8 h-8 bg-gradient-to-br from-indigo-600 to-blue-500 rounded flex items-center justify-center text-white cursor-pointer overflow-hidden relative group">
-                    <i data-lucide="shield-check" class="w-5 h-5"></i>
-                    <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <i data-lucide="upload" class="w-3 h-3 text-white"></i>
-                    </div>
+                <div id="mobile-logo" onclick="document.getElementById('logoInput').click()" class="w-8 h-8 bg-slate-100 rounded flex items-center justify-center text-slate-400 border border-dashed border-slate-300 cursor-pointer overflow-hidden relative group">
+                    <i data-lucide="image-plus" class="w-4 h-4" id="mobile-icon"></i>
                 </div>
                 <h1 class="text-lg font-bold text-indigo-800 h-title">PusakaPro</h1>
             </div>
@@ -293,75 +304,79 @@
 
                     <!-- L6: Laporan PDF -->
                     <div class="step-content hidden" id="step-6">
-                        <div id="report-container" class="print-area bg-white md:p-8 p-5 rounded-xl border border-slate-200 shadow-sm relative">
+                        <div id="report-container" class="print-area bg-white md:p-12 p-6 rounded-xl border border-slate-200 shadow-sm relative flex flex-col items-center">
                             
-                            <!-- Header Report dengan LOGO DINAMIK -->
-                            <div class="text-center mb-8 pb-6 border-b-2 border-slate-100">
-                                <div class="flex items-center justify-center gap-4 mb-3">
-                                    <div id="report-logo" class="w-16 h-16 bg-slate-50 rounded-xl flex items-center justify-center text-indigo-600 overflow-hidden border border-slate-200 shadow-sm">
-                                        <i data-lucide="shield-check" class="w-10 h-10"></i>
-                                    </div>
-                                    <div class="text-left">
-                                        <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight h-title">Laporan Analisa Pusaka</h1>
-                                        <p class="text-slate-400 uppercase tracking-widest text-[10px] md:text-xs font-bold">PusakaPro Perunding Harta Islam</p>
-                                    </div>
+                            <!-- Header Report dengan LOGO DINAMIK (DIPASTIKAN CENTER) -->
+                            <div class="w-full text-center mb-10 pb-8 border-b-2 border-slate-100 flex flex-col items-center">
+                                <div id="report-logo" class="mb-4 flex items-center justify-center">
+                                    <!-- Logo akan dimasukkan ke sini melalui JS -->
                                 </div>
-                                <div class="mt-4 inline-block bg-slate-50 py-2 px-6 rounded-full border border-slate-200">
+                                <div class="text-center">
+                                    <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight h-title mb-1">Laporan Analisa Pusaka</h1>
+                                    <p class="text-slate-400 uppercase tracking-widest text-xs font-bold">PusakaPro Perunding Harta Islam</p>
+                                </div>
+                                <div class="mt-6 inline-block bg-slate-50 py-2.5 px-8 rounded-full border border-slate-200">
                                     <p class="text-xs text-slate-600 font-medium">Disediakan untuk: <strong id="rep-client-name" class="text-indigo-800 text-sm md:text-base"></strong></p>
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                                <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
-                                    <p class="text-xs text-emerald-700 font-bold mb-1">Harta Kasar</p>
+                            <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+                                <div class="bg-emerald-50 p-5 rounded-xl border border-emerald-100 text-center">
+                                    <p class="text-[10px] text-emerald-700 font-bold mb-1 uppercase tracking-wider">Harta Kasar</p>
                                     <p class="text-xl font-black text-emerald-900" id="rep-total-harta">RM 0</p>
                                 </div>
-                                <div class="bg-red-50 p-4 rounded-xl border border-red-100">
-                                    <p class="text-xs text-red-700 font-bold mb-1">Hutang</p>
+                                <div class="bg-red-50 p-5 rounded-xl border border-red-100 text-center">
+                                    <p class="text-[10px] text-red-700 font-bold mb-1 uppercase tracking-wider">Hutang</p>
                                     <p class="text-xl font-black text-red-900" id="rep-total-hutang">RM 0</p>
                                 </div>
-                                <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
-                                    <p class="text-xs text-indigo-700 font-bold mb-1">Pusaka Bersih</p>
+                                <div class="bg-indigo-50 p-5 rounded-xl border border-indigo-200 text-center">
+                                    <p class="text-[10px] text-indigo-700 font-bold mb-1 uppercase tracking-wider">Pusaka Bersih</p>
                                     <p class="text-xl font-black text-indigo-900" id="rep-net-harta">RM 0</p>
                                 </div>
                             </div>
 
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-                                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                                    <h3 class="font-bold text-base border-b pb-3 mb-4 flex items-center gap-2 text-indigo-900">
+                            <div class="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+                                <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                                    <h3 class="font-bold text-base border-b pb-3 mb-5 flex items-center gap-2 text-indigo-900 uppercase tracking-wide">
                                         <i data-lucide="users" class="text-indigo-500 w-5 h-5"></i> Jadual Faraid
                                     </h3>
                                     <div class="overflow-x-auto">
                                         <table class="w-full text-left text-sm border-collapse">
                                             <thead>
                                                 <tr class="bg-indigo-50 text-indigo-800 border-y border-indigo-100">
-                                                    <th class="py-2 px-2 font-bold">Waris</th>
-                                                    <th class="py-2 px-2 font-bold text-center">Bahagian</th>
-                                                    <th class="py-2 px-2 font-bold text-right">Nilai (RM)</th>
+                                                    <th class="py-2.5 px-3 font-bold">Waris</th>
+                                                    <th class="py-2.5 px-3 font-bold text-center">Bahagian</th>
+                                                    <th class="py-2.5 px-3 font-bold text-right">Nilai (RM)</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="faraid-table-body" class="divide-y divide-slate-100"></tbody>
                                         </table>
                                     </div>
                                 </div>
-                                <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-                                    <h3 class="font-bold text-base border-b pb-3 mb-4 flex items-center gap-2 text-amber-900">
+                                <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
+                                    <h3 class="font-bold text-base border-b pb-3 mb-5 flex items-center gap-2 text-amber-900 uppercase tracking-wide">
                                         <i data-lucide="calculator" class="text-amber-500 w-5 h-5"></i> Analisa Dana
                                     </h3>
-                                    <div id="rep-dana-summary" class="space-y-3"></div>
+                                    <div id="rep-dana-summary" class="space-y-4"></div>
                                 </div>
                             </div>
 
-                            <div class="bg-slate-800 text-white rounded-xl p-6 shadow-lg">
-                                <h3 class="font-bold text-lg mb-4 text-amber-400">Cadangan Solusi</h3>
-                                <div id="rep-solusi" class="text-slate-200 text-sm leading-relaxed"></div>
+                            <div class="w-full bg-slate-800 text-white rounded-xl p-8 shadow-lg">
+                                <h3 class="font-bold text-lg mb-5 text-amber-400 flex items-center gap-2">
+                                    <i data-lucide="lightbulb" class="w-5 h-5"></i> Cadangan Solusi
+                                </h3>
+                                <div id="rep-solusi" class="text-slate-200 text-sm leading-relaxed space-y-3"></div>
+                            </div>
+                            
+                            <div class="mt-12 text-center text-[10px] text-slate-400 font-medium w-full border-t pt-6">
+                                Laporan ini dijana secara automatik oleh Sistem PusakaPro. Sila rujuk perunding bertauliah untuk pengesahan lanjut.
                             </div>
                         </div>
 
                         <div class="flex flex-col md:flex-row gap-3 mt-8 pt-6 border-t border-slate-200 no-print">
                             <button type="button" onclick="prevStep()" class="bg-white border text-slate-700 font-bold py-3 px-5 rounded-xl hover:bg-slate-50 transition text-sm">Kembali</button>
-                            <button type="button" onclick="downloadPDF()" class="flex-1 bg-indigo-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-indigo-700 transition flex items-center justify-center gap-2 text-sm">
-                                <i data-lucide="download" class="w-4 h-4"></i> Muat Turun Laporan PDF
+                            <button type="button" onclick="downloadPDF()" class="flex-1 bg-indigo-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-indigo-700 transition flex items-center justify-center gap-2 text-sm shadow-lg shadow-indigo-100">
+                                <i data-lucide="download" class="w-4 h-4"></i> Muat Turun Laporan PDF (Center A4)
                             </button>
                             <button type="button" onclick="showResetModal()" class="bg-red-50 text-red-600 border border-red-100 font-bold py-3 px-4 rounded-xl hover:bg-red-100 transition text-sm">Mula Semula</button>
                         </div>
@@ -395,7 +410,7 @@
         const totalSteps = 6;
         let hartaList = [];
         let hutangList = [];
-        let uploadedLogoData = null; // Menyimpan data logo
+        let uploadedLogoData = null; 
 
         const stepsData = [
             { id: 1, title: 'Profil Waris' },
@@ -412,12 +427,17 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     uploadedLogoData = e.target.result;
-                    // Kemas kini semua UI logo
-                    const containers = ['sidebar-logo', 'mobile-logo', 'report-logo'];
-                    containers.forEach(id => {
-                        const el = document.getElementById(id);
-                        if (el) el.innerHTML = `<img src="${uploadedLogoData}" class="w-full h-full object-cover" alt="Logo">`;
-                    });
+                    
+                    // Kemas kini Sidebar & Mobile
+                    const sidebarLogo = document.getElementById('sidebar-logo');
+                    const mobileLogo = document.getElementById('mobile-logo');
+                    
+                    sidebarLogo.innerHTML = `<img src="${uploadedLogoData}" class="w-full h-full object-cover" alt="Logo">`;
+                    mobileLogo.innerHTML = `<img src="${uploadedLogoData}" class="w-full h-full object-cover" alt="Logo">`;
+                    
+                    // Pastikan tiada border dashed bila ada gambar
+                    sidebarLogo.className = "w-12 h-12 bg-white rounded-xl flex items-center justify-center border border-slate-200 cursor-pointer overflow-hidden relative group shadow-sm";
+                    mobileLogo.className = "w-8 h-8 bg-white rounded flex items-center justify-center border border-slate-200 cursor-pointer overflow-hidden relative group shadow-sm";
                 }
                 reader.readAsDataURL(file);
             }
@@ -528,12 +548,37 @@
 
         function formatRM(n) { return 'RM ' + n.toLocaleString('ms-MY'); }
 
+        function updateStep5() {
+            const pampasan = parseFloat(document.getElementById('danaTakaful').value) || 0;
+            const tunai = parseFloat(document.getElementById('danaTunai').value) || 0;
+            const totalHarta = hartaList.reduce((s,i)=>s+i.nilai, 0);
+            const minDana = totalHarta * 0.03;
+            const totalDana = pampasan + tunai;
+            
+            const cadanganEl = document.getElementById('st5-cadangan');
+            if (totalDana >= minDana) {
+                cadanganEl.innerHTML = `<div class="p-3 bg-emerald-500/20 border border-emerald-500 rounded-lg text-emerald-200 text-sm">Dana anda mencukupi (${formatRM(totalDana)}). Syarat minimum adalah sekitar ${formatRM(minDana)}.</div>`;
+            } else {
+                cadanganEl.innerHTML = `<div class="p-3 bg-amber-500/20 border border-amber-500 rounded-lg text-amber-200 text-sm">Dana kecairan anda kurang. Dicadangkan menambah pampasan Takaful sekurang-kurangnya ${formatRM(minDana - totalDana)}.</div>`;
+            }
+        }
+
+        function checkWasiatLimit() {
+            const totalHarta = hartaList.reduce((s,i)=>s+i.nilai, 0);
+            const totalHutang = hutangList.reduce((s,i)=>s+i.nilai, 0);
+            const net = totalHarta - totalHutang;
+            const wasiat = parseFloat(document.getElementById('nilaiWasiat').value) || 0;
+            document.getElementById('wasiat-warning').classList.toggle('hidden', wasiat <= (net/3));
+        }
+
         function generateReport() {
             const client = document.getElementById('clientName').value;
             const hKasar = hartaList.reduce((s,i)=>s+i.nilai,0);
             const hHutang = hutangList.reduce((s,i)=>s+i.nilai,0);
             const net = hKasar - hHutang;
             const wasiat = parseFloat(document.getElementById('nilaiWasiat').value) || 0;
+            const pampasan = parseFloat(document.getElementById('danaTakaful').value) || 0;
+            const tunai = parseFloat(document.getElementById('danaTunai').value) || 0;
             const baseFaraid = net - wasiat;
 
             document.getElementById('rep-client-name').innerText = client;
@@ -543,20 +588,64 @@
             
             // Faraid Simpel
             const tbody = document.getElementById('faraid-table-body');
-            tbody.innerHTML = `<tr><td class="p-2">Waris Faraid Sah</td><td class="p-2 text-center">100%</td><td class="p-2 text-right font-bold">${formatRM(baseFaraid)}</td></tr>`;
+            tbody.innerHTML = `
+                <tr><td class="py-3 px-3 font-medium">Bukan Waris (Wasiat)</td><td class="py-3 px-3 text-center">${wasiat > 0 ? 'Pilihan' : '-'}</td><td class="py-3 px-3 text-right font-bold text-blue-700">${formatRM(wasiat)}</td></tr>
+                <tr><td class="py-3 px-3 font-medium">Waris Faraid Sah</td><td class="py-3 px-3 text-center">100%</td><td class="py-3 px-3 text-right font-bold text-indigo-700">${formatRM(baseFaraid)}</td></tr>
+            `;
             
-            document.getElementById('rep-solusi').innerHTML = `<p>Berdasarkan analisa, harta bersih anda berjumlah ${formatRM(net)}. Dicadangkan untuk melakukan Hibah bagi aset hartanah bagi menjamin kelangsungan waris.</p>`;
+            // Dana Summary
+            const danaSummary = document.getElementById('rep-dana-summary');
+            danaSummary.innerHTML = `
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-600">Kos Pentadbiran (Anggaran 3%)</span>
+                    <span class="font-bold text-red-600">${formatRM(hKasar * 0.03)}</span>
+                </div>
+                <div class="flex justify-between items-center text-sm">
+                    <span class="text-slate-600">Dana Sedia Ada (Tunai + Takaful)</span>
+                    <span class="font-bold text-emerald-600">${formatRM(pampasan + tunai)}</span>
+                </div>
+            `;
+
+            // Solusi
+            document.getElementById('rep-solusi').innerHTML = `
+                <p>1. <strong>Penyelesaian Hutang:</strong> Pastikan peruntukan ${formatRM(hHutang)} diselesaikan segera sebelum pembahagian faraid.</p>
+                <p>2. <strong>Hibah Hartanah:</strong> Bagi mengelakkan isu liabiliti atau tuntutan berpanjangan, aset hartanah bernilai tinggi dicadangkan untuk dihibahkan terus.</p>
+                <p>3. <strong>Dana Kecairan:</strong> Dana tunai segera sangat penting bagi memastikan waris tidak terbeban dengan kos guaman dan pentadbiran.</p>
+            `;
             
-            // Re-apply logo in report if it was already uploaded
+            // Re-apply logo in report IF it was uploaded
+            const reportLogoContainer = document.getElementById('report-logo');
             if (uploadedLogoData) {
-                document.getElementById('report-logo').innerHTML = `<img src="${uploadedLogoData}" class="w-full h-full object-cover" alt="Logo">`;
+                reportLogoContainer.innerHTML = `<img src="${uploadedLogoData}" class="h-24 w-auto object-contain mx-auto" alt="Logo">`;
+            } else {
+                // Jangan tunjuk ikon perisai bila tiada logo
+                reportLogoContainer.innerHTML = '';
             }
+            
             lucide.createIcons();
         }
 
         function downloadPDF() {
             const element = document.getElementById('report-container');
-            const opt = { margin: 10, filename: 'Laporan_Pusaka.pdf', html2canvas: { scale: 2 }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }};
+            
+            // Konfigurasi PDF untuk memastikan center dan padding betul
+            const opt = { 
+                margin: [10, 0, 10, 0], // top, left, bottom, right
+                filename: 'Laporan_Analisa_Pusaka.pdf', 
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { 
+                    scale: 2, 
+                    useCORS: true,
+                    logging: false,
+                    letterRendering: true
+                }, 
+                jsPDF: { 
+                    unit: 'mm', 
+                    format: 'a4', 
+                    orientation: 'portrait' 
+                }
+            };
+            
             html2pdf().set(opt).from(element).save();
         }
 
@@ -568,6 +657,7 @@
             initStepper();
             addHartaRow();
             addHutangRow();
+            updateStep5();
         };
     </script>
 </body>
